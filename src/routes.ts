@@ -1,9 +1,14 @@
 import { Router } from 'express';
 
+import ProductController from './controllers/ProductController';
+
 const router = Router();
 
-router.get('/products', (request, response) => {
-  return response.json({ message: 'Hello World' });
-});
+// Products routes
+router.get('/products', ProductController.index);
+router.get('/products/:id', ProductController.show);
+router.post('/products', ProductController.store);
+router.put('/products/:id', ProductController.update);
+router.delete('/products/:id', ProductController.delete);
 
 export { router };

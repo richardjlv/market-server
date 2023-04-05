@@ -17,6 +17,7 @@ module.exports = {
   plugins: ['@typescript-eslint', 'prettier', 'eslint-plugin-import-helpers'],
   rules: {
     'prettier/prettier': 'error',
+    'class-methods-use-this': 'off',
     '@typescript-eslint/naming-convention': [
       'error',
       {

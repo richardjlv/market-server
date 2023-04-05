@@ -3,7 +3,6 @@ import express, { Express, Request, Response } from 'express';
 import Youch from 'youch';
 
 import 'express-async-errors';
-import 'dotenv/config';
 
 import { router } from './routes';
 

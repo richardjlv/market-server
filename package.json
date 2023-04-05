@@ -6,14 +6,15 @@
   "scripts": {
     "build": "babel src --extensions \".js,.ts\" --out-dir dist --copy-files --no-copy-ignored",
     "start": "node dist/server.js",
-    "dev": "tsnd -r tsconfig-paths/register --transpile-only --respawn --ignore-watch node_modules src/server.ts"
+    "dev": "tsnd -r tsconfig-paths/register --transpile-only --exit-child --respawn --ignore-watch node_modules src/server.ts"
   },
   "dependencies": {
+    "@prisma/client": "^4.12.0",
     "cors": "^2.8.5",
-    "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "express-async-errors": "^3.1.1",
-    "youch": "^3.2.3"
+    "youch": "^3.2.3",
+    "yup": "^1.0.2"
   },
   "devDependencies": {
     "@babel/cli": "^7.21.0",
@@ -36,7 +37,8 @@
     "eslint-plugin-prettier": "^4.2.1",
     "jest": "^29.5.0",
     "prettier": "^2.8.7",
-    "ts-jest": "^26.4.1",
+    "prisma": "^4.12.0",
+    "ts-jest": "^29.1.0",
     "ts-node-dev": "^2.0.0",
     "tsconfig-paths": "^4.2.0",
     "typescript": "^5.0.3"
