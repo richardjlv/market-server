@@ -125,3 +125,12 @@ Você pode acessar a REST API do servidor utilizando os seguintes endpoints:
 
 - `/products/:id`: Deleta um produto pelo seu `id`
 - `/categories/:id`: Deleta uma categoria pelo seu `id`
+
+## Testes
+
+Para executar os testes, execute o comando:
+
+```
+npm run test
+
+```
