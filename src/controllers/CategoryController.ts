@@ -1,6 +1,8 @@
 import { Request, Response } from 'express';
-import prisma from 'src/database/prisma';
+import mongoose from 'mongoose';
 import * as Yup from 'yup';
+
+import prisma from '../database/prisma';
 
 interface IStoreCategory {
   name: string;
@@ -61,6 +63,10 @@ class ProductController {
 
   async delete(req: Request, res: Response): Promise<Response> {
     const { id } = req.params;
+
+    if (!mongoose.isValidObjectId(id)) {
+      return res.status(400).json({ error: 'Invalid category id' });
+    }
 
     const category = await prisma.category.findUnique({
       where: { id },

@@ -1,6 +1,8 @@
 import { Request, Response } from 'express';
-import prisma from 'src/database/prisma';
+import mongoose from 'mongoose';
 import * as Yup from 'yup';
+
+import prisma from '../database/prisma';
 
 interface IStoreProduct {
   title: string;
@@ -67,6 +69,10 @@ class ProductController {
   async show(req: Request, res: Response): Promise<Response> {
     const { id } = req.params;
 
+    if (!mongoose.isValidObjectId(id)) {
+      return res.status(400).json({ error: 'Invalid product id.' });
+    }
+
     const product = await prisma.product.findUnique({
       where: { id },
       include: {
@@ -119,6 +125,14 @@ class ProductController {
       unitsInStock,
     }: IStoreProduct = req.body;
 
+    const productExists = await prisma.product.findFirst({
+      where: { title },
+    });
+
+    if (productExists) {
+      return res.status(400).json({ error: 'Product already exists' });
+    }
+
     const categoryExists = await prisma.category.findUnique({
       where: { name: categoryName },
     });
@@ -167,12 +181,12 @@ class ProductController {
 
   async update(req: Request, res: Response): Promise<Response> {
     const schema = Yup.object().shape({
-      title: Yup.string(),
-      description: Yup.string(),
-      price: Yup.number(),
-      images: Yup.array().of(Yup.string()),
-      unitsInStock: Yup.number(),
-      category: Yup.string(),
+      title: Yup.string().required(),
+      description: Yup.string().required(),
+      price: Yup.number().required(),
+      images: Yup.array().of(Yup.string()).required(),
+      unitsInStock: Yup.number().required(),
+      category: Yup.string().required(),
     });
 
     try {
@@ -206,6 +220,10 @@ class ProductController {
       images,
       unitsInStock,
     }: IUpdateProduct = req.body;
+
+    if (!mongoose.isValidObjectId(id)) {
+      return res.status(400).json({ error: 'Invalid product id.' });
+    }
 
     const product = await prisma.product.findUnique({
       where: { id },
@@ -273,12 +291,16 @@ class ProductController {
   async delete(req: Request, res: Response): Promise<Response> {
     const { id } = req.params;
 
+    if (!mongoose.isValidObjectId(id)) {
+      return res.status(400).json({ error: 'Invalid product id.' });
+    }
+
     const product = await prisma.product.findUnique({
       where: { id },
     });
 
     if (!product) {
-      return res.status(404).json({ error: 'Product not found' });
+      return res.status(404).json({ error: 'Product not found.' });
     }
 
     await prisma.product.delete({
